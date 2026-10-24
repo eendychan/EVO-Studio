@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVO Studio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Верхняя панель -->
+        <header class="top-bar">
+            <div class="logo">EVO Studio</div>
+            <div class="transport">
+                <button id="playBtn">▶</button>
+                <button id="stopBtn">■</button>
+                <button id="recBtn">●</button>
+                <span id="bpmDisplay">120 BPM</span>
+                <input type="number" id="bpmInput" value="120" min="40" max="300" step="1">
+            </div>
+            <div class="master-vol">
+                <label>Master</label>
+                <input type="range" id="masterVol" min="0" max="1" step="0.01" value="0.8">
+            </div>
+        </header>
+
+        <!-- Основная рабочая область -->
+        <div class="main-area">
+            <!-- Левая панель: браузер сэмплов -->
+            <aside class="browser" id="browser">
+                <h3>Браузер</h3>
+                <div class="drop-zone" id="dropZone">
+                    Перетащите сюда аудиофайлы (wav, mp3)
+                </div>
+                <div class="sample-list" id="sampleList">
+                    <!-- Сэмплы будут добавляться сюда -->
+                </div>
+            </aside>
+
+            <!-- Центральная часть: плейлист / пиано-ролл -->
+            <section class="center-panel">
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="playlist">Плейлист</button>
+                    <button class="tab-btn" data-tab="pianoroll">Пиано-ролл</button>
+                </div>
+                <div id="playlistTab" class="tab-content active">
+                    <div class="playlist-header">
+                        <span>Дорожки</span>
+                        <div class="timeline" id="timeline"></div>
+                    </div>
+                    <div class="playlist-tracks" id="playlistTracks">
+                        <!-- Дорожки -->
+                    </div>
+                </div>
+                <div id="pianorollTab" class="tab-content">
+                    <div class="pianoroll-toolbar">
+                        <select id="prChannelSelect"></select>
+                        <button id="prClear">Очистить</button>
+                    </div>
+                    <canvas id="pianoRollCanvas" width="800" height="400"></canvas>
+                </div>
+            </section>
+        </div>
+
+        <!-- Нижняя панель: ченл-рек и микшер -->
+        <footer class="bottom-panel">
+            <div class="channel-rack" id="channelRack">
+                <h3>Channel Rack</h3>
+                <div id="channelList"></div>
+                <button id="addChannelBtn">+ Добавить канал</button>
+            </div>
+            <div class="mixer" id="mixer">
+                <h3>Микшер</h3>
+                <div id="mixerStrips"></div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Модальное окно плагина -->
+    <div id="pluginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="pluginUI"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
