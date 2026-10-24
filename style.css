@@ -1,0 +1,308 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: #1e1e1e;
+    color: #ccc;
+    height: 100vh;
+    overflow: hidden;
+}
+#app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+.top-bar {
+    display: flex;
+    align-items: center;
+    background: #2a2a2a;
+    padding: 8px 16px;
+    border-bottom: 2px solid #444;
+    gap: 20px;
+}
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #aaa;
+    letter-spacing: 2px;
+    border-right: 1px solid #555;
+    padding-right: 20px;
+}
+.transport button {
+    background: #3a3a3a;
+    border: 1px solid #555;
+    color: #ddd;
+    width: 36px;
+    height: 36px;
+    margin-right: 5px;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+.transport button:hover { background: #4a4a4a; }
+.transport button.active { background: #b33; }
+#bpmInput { width: 60px; background: #222; border: 1px solid #555; color: #eee; text-align: center; }
+.master-vol { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+
+.main-area { display: flex; flex: 1; overflow: hidden; }
+.browser {
+    width: 220px;
+    background: #252525;
+    border-right: 2px solid #444;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+.browser h3 { font-size: 0.9rem; text-transform: uppercase; color: #888; margin-bottom: 10px; }
+.drop-zone {
+    border: 2px dashed #555;
+    padding: 20px;
+    text-align: center;
+    color: #777;
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.drop-zone.dragover { border-color: #aaa; color: #aaa; }
+.sample-list { flex: 1; overflow-y: auto; }
+.sample-item {
+    background: #333;
+    border: 1px solid #444;
+    padding: 6px 8px;
+    margin-bottom: 4px;
+    font-size: 0.75rem;
+    cursor: grab;
+    user-select: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.sample-item:hover { background: #3d3d3d; }
+.sample-item:active { cursor: grabbing; }
+
+.center-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #1a1a1a;
+    overflow: hidden;
+}
+.tabs { display: flex; background: #222; border-bottom: 1px solid #444; }
+.tab-btn {
+    background: none;
+    border: none;
+    color: #888;
+    padding: 8px 20px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    border-right: 1px solid #333;
+}
+.tab-btn.active { background: #2e2e2e; color: #fff; border-bottom: 2px solid #aaa; }
+.tab-content { display: none; flex: 1; overflow: auto; }
+.tab-content.active { display: flex; flex-direction: column; }
+
+/* Плейлист */
+.playlist-header { display: flex; background: #2a2a2a; border-bottom: 1px solid #444; }
+.playlist-header span { width: 100px; padding: 6px; font-size: 0.75rem; color: #888; border-right: 1px solid #444; }
+.timeline { flex: 1; position: relative; height: 28px; overflow: hidden; }
+.timeline .bar-marker {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: #444;
+    color: #666;
+    font-size: 0.65rem;
+    padding-left: 3px;
+}
+.playlist-tracks { flex: 1; overflow-y: auto; }
+.playlist-track {
+    display: flex;
+    height: 60px;
+    border-bottom: 1px solid #333;
+    position: relative;
+}
+.track-header {
+    width: 100px;
+    background: #2a2a2a;
+    border-right: 1px solid #444;
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+    font-size: 0.75rem;
+    color: #aaa;
+    flex-shrink: 0;
+}
+.track-lane {
+    flex: 1;
+    position: relative;
+    background: #222;
+    overflow: hidden;
+}
+.clip {
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    background: #4a6a8a;
+    border: 1px solid #6a9aca;
+    border-radius: 2px;
+    color: #fff;
+    font-size: 0.65rem;
+    padding: 2px 4px;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+    opacity: 0.9;
+}
+.clip.selected { border-color: #fff; box-shadow: 0 0 0 2px #fff3; }
+.clip-handle {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+    cursor: ew-resize;
+    background: #fff2;
+}
+
+/* Пиано-ролл */
+.pianoroll-toolbar { padding: 6px; background: #2a2a2a; display: flex; gap: 10px; align-items: center; }
+.pianoroll-toolbar select { background: #222; color: #ccc; border: 1px solid #555; padding: 4px; }
+.pianoroll-toolbar button { background: #3a3a3a; border: 1px solid #555; color: #ddd; padding: 4px 12px; cursor: pointer; }
+#pianoRollCanvas { background: #111; cursor: crosshair; flex: 1; }
+
+/* Нижняя панель */
+.bottom-panel {
+    height: 260px;
+    display: flex;
+    border-top: 2px solid #444;
+    background: #1e1e1e;
+}
+.channel-rack {
+    flex: 1;
+    border-right: 2px solid #444;
+    padding: 8px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+.channel-rack h3, .mixer h3 { font-size: 0.8rem; text-transform: uppercase; color: #888; margin-bottom: 8px; }
+#channelList { flex: 1; overflow-y: auto; }
+.channel-item {
+    display: flex;
+    align-items: center;
+    background: #2a2a2a;
+    border: 1px solid #3a3a3a;
+    padding: 4px 8px;
+    margin-bottom: 3px;
+    font-size: 0.75rem;
+    cursor: pointer;
+}
+.channel-item:hover { background: #333; }
+.channel-item .ch-name { flex: 1; }
+.channel-item .ch-btn {
+    width: 18px; height: 18px;
+    margin-left: 4px;
+    border: 1px solid #555;
+    background: #3a3a3a;
+    color: #aaa;
+    font-size: 0.7rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+}
+.channel-item .ch-btn.active { background: #8a4; color: #000; }
+#addChannelBtn {
+    background: #3a3a3a;
+    border: 1px solid #555;
+    color: #ccc;
+    padding: 6px;
+    cursor: pointer;
+    margin-top: 4px;
+}
+.mixer { width: 600px; padding: 8px; overflow-x: auto; display: flex; flex-direction: column; }
+#mixerStrips { display: flex; gap: 6px; flex: 1; overflow-x: auto; align-items: flex-end; }
+.strip {
+    width: 56px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #252525;
+    border: 1px solid #3a3a3a;
+    padding: 4px 2px;
+    flex-shrink: 0;
+}
+.strip .strip-name { font-size: 0.6rem; color: #999; margin-bottom: 4px; white-space: nowrap; overflow: hidden; }
+.strip .fader {
+    width: 10px;
+    height: 80px;
+    background: #111;
+    border: 1px solid #444;
+    position: relative;
+    cursor: ns-resize;
+    margin-bottom: 4px;
+}
+.strip .fader-handle {
+    position: absolute;
+    width: 20px;
+    height: 6px;
+    background: #888;
+    left: -5px;
+    border-radius: 1px;
+}
+.strip .pan-knob {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: #333;
+    border: 1px solid #555;
+    margin-bottom: 4px;
+    position: relative;
+}
+.strip .pan-knob::after {
+    content: '';
+    position: absolute;
+    top: 2px; left: 50%;
+    width: 2px; height: 10px;
+    background: #aaa;
+    transform: translateX(-50%) rotate(0deg);
+    transform-origin: bottom center;
+}
+.strip .plugin-slots { width: 100%; }
+.strip .plugin-slot {
+    font-size: 0.55rem;
+    background: #333;
+    border: 1px solid #444;
+    padding: 1px 2px;
+    margin-top: 2px;
+    cursor: pointer;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.strip .plugin-slot:hover { background: #3a3a3a; }
+
+/* Модальное окно */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.7);
+}
+.modal.show { display: flex; align-items: center; justify-content: center; }
+.modal-content {
+    background: #222;
+    border: 2px solid #555;
+    padding: 16px;
+    min-width: 400px;
+    max-width: 90vw;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+}
+.close { position: absolute; top: 6px; right: 12px; font-size: 1.5rem; cursor: pointer; color: #aaa; }
+.close:hover { color: #fff; }
+.plugin-ui { color: #ccc; }
+.plugin-ui label { display: block; margin: 6px 0 2px; font-size: 0.8rem; }
+.plugin-ui input[type="range"] { width: 100%; }
+.plugin-ui select { background: #333; color: #ccc; border: 1px solid #555; padding: 2px; }
