@@ -1,89 +1,99 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EVO Studio</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>EVO Studio</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="app">
-        <!-- Верхняя панель -->
-        <header class="top-bar">
-            <div class="logo">EVO Studio</div>
-            <div class="transport">
-                <button id="playBtn">▶</button>
-                <button id="stopBtn">■</button>
-                <button id="recBtn">●</button>
-                <span id="bpmDisplay">120 BPM</span>
-                <input type="number" id="bpmInput" value="120" min="40" max="300" step="1">
-            </div>
-            <div class="master-vol">
-                <label>Master</label>
-                <input type="range" id="masterVol" min="0" max="1" step="0.01" value="0.8">
-            </div>
-        </header>
+<div id="app">
 
-        <!-- Основная рабочая область -->
-        <div class="main-area">
-            <!-- Левая панель: браузер сэмплов -->
-            <aside class="browser" id="browser">
-                <h3>Браузер</h3>
-                <div class="drop-zone" id="dropZone">
-                    Перетащите сюда аудиофайлы (wav, mp3)
-                </div>
-                <div class="sample-list" id="sampleList">
-                    <!-- Сэмплы будут добавляться сюда -->
-                </div>
-            </aside>
+  <header class="top-bar">
+    <div class="logo">EVO<span>Studio</span></div>
+    <div class="transport">
+      <button id="playBtn" title="Play">▶</button>
+      <button id="stopBtn" title="Stop">■</button>
+      <button id="recBtn" title="Record">●</button>
+      <button id="loopBtn" title="Loop">↻</button>
+      <div class="bpm-box">
+        <label>BPM</label>
+        <input type="number" id="bpmInput" value="120" min="40" max="300">
+      </div>
+      <div id="positionDisplay">1.1.1</div>
+    </div>
+    <div class="master-box">
+      <label>MASTER</label>
+      <input type="range" id="masterVol" min="0" max="1" step="0.01" value="0.8">
+      <div class="meter"><div id="masterMeter"></div></div>
+    </div>
+    <button id="exportBtn" class="small-btn">EXPORT WAV</button>
+  </header>
 
-            <!-- Центральная часть: плейлист / пиано-ролл -->
-            <section class="center-panel">
-                <div class="tabs">
-                    <button class="tab-btn active" data-tab="playlist">Плейлист</button>
-                    <button class="tab-btn" data-tab="pianoroll">Пиано-ролл</button>
-                </div>
-                <div id="playlistTab" class="tab-content active">
-                    <div class="playlist-header">
-                        <span>Дорожки</span>
-                        <div class="timeline" id="timeline"></div>
-                    </div>
-                    <div class="playlist-tracks" id="playlistTracks">
-                        <!-- Дорожки -->
-                    </div>
-                </div>
-                <div id="pianorollTab" class="tab-content">
-                    <div class="pianoroll-toolbar">
-                        <select id="prChannelSelect"></select>
-                        <button id="prClear">Очистить</button>
-                    </div>
-                    <canvas id="pianoRollCanvas" width="800" height="400"></canvas>
-                </div>
-            </section>
+  <div class="main-area">
+
+    <aside class="browser">
+      <div class="panel-title">BROWSER</div>
+      <div class="drop-zone" id="dropZone">
+        <div>⬇ DROP AUDIO HERE</div>
+        <small>wav / mp3 / ogg</small>
+        <input type="file" id="fileInput" multiple accept="audio/*" hidden>
+      </div>
+      <div class="sample-list" id="sampleList"></div>
+      <div class="panel-hint">Клик — создать канал · Drag — в плейлист/ченл-рек</div>
+    </aside>
+
+    <section class="center-panel">
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="playlist">PLAYLIST</button>
+        <button class="tab-btn" data-tab="pianoroll">PIANO ROLL</button>
+      </div>
+
+      <div id="playlistTab" class="tab-content active">
+        <div class="playlist-toolbar">
+          <span>Bars: 16</span>
+          <button id="addTrackBtn" class="small-btn">+ TRACK</button>
         </div>
+        <div class="playlist-body" id="playlistBody">
+          <div class="playlist-ruler" id="playlistRuler"></div>
+          <div class="playlist-tracks" id="playlistTracks"></div>
+        </div>
+      </div>
 
-        <!-- Нижняя панель: ченл-рек и микшер -->
-        <footer class="bottom-panel">
-            <div class="channel-rack" id="channelRack">
-                <h3>Channel Rack</h3>
-                <div id="channelList"></div>
-                <button id="addChannelBtn">+ Добавить канал</button>
-            </div>
-            <div class="mixer" id="mixer">
-                <h3>Микшер</h3>
-                <div id="mixerStrips"></div>
-            </div>
-        </footer>
+      <div id="pianorollTab" class="tab-content">
+        <div class="pianoroll-toolbar">
+          <select id="prChannelSelect"></select>
+          <label><input type="checkbox" id="prSnap" checked> Snap</label>
+          <button id="prClear" class="small-btn">CLEAR</button>
+          <span class="hint">ЛКМ — рисовать · ПКМ — удалить · drag хвоста — длина</span>
+        </div>
+        <div class="pianoroll-wrap">
+          <canvas id="pianoRollCanvas" width="1200" height="480"></canvas>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer class="bottom-panel">
+    <div class="channel-rack">
+      <div class="panel-title">CHANNEL RACK</div>
+      <div id="channelList"></div>
+      <button id="addChannelBtn" class="small-btn">+ CHANNEL</button>
     </div>
 
-    <!-- Модальное окно плагина -->
-    <div id="pluginModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <div id="pluginUI"></div>
-        </div>
+    <div class="mixer">
+      <div class="panel-title">MIXER</div>
+      <div id="mixerStrips"></div>
     </div>
+  </footer>
+</div>
 
-    <script src="script.js"></script>
+<div id="pluginModal" class="modal">
+  <div class="modal-content">
+    <span class="close" id="modalClose">&times;</span>
+    <div id="pluginUI"></div>
+  </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
